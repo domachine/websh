@@ -13,7 +13,7 @@ const runner = (payload, command) =>
     };
     iframe.src = command;
     iframe.onload = () => {
-      iframe.contentWindow.postMessage([payload], "*");
+      iframe.contentWindow.postMessage(payload, "*");
     };
   });
 

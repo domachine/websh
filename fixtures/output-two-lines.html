@@ -1,0 +1,9 @@
+<script>
+  const params = new URLSearchParams(window.location.search);
+  window.parent.postMessage([
+    "print",
+    params.get("first"),
+    params.get("second")
+  ]);
+  window.parent.postMessage(["exit", 0]);
+</script>
