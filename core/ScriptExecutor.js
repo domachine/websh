@@ -14,7 +14,7 @@ export const promiseReduce = (array, fn, seed) =>
   );
 
 export const createScriptExecutor = runner => script =>
-  promiseReduce(parseScript(script), runner, null);
+  promiseReduce(parseScript(script), runner, []);
 
 const scriptExecutor = createScriptExecutor(runner);
 

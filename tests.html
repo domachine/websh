@@ -3,7 +3,11 @@
   <body style="background-color: black">
     <script type="module">
       import test from "./test.js";
-      import { parseScript, promiseReduce } from "./core/ScriptExecutor.js";
+      import {
+        parseScript,
+        promiseReduce,
+        createScriptExecutor
+      } from "./core/ScriptExecutor.js";
       import systemCallExecutor from "./core/SystemCallExecutor.js";
 
       const assertCommandsAreEqual = (c0, c1) => {
@@ -70,6 +74,20 @@
 
         if (args.length !== output.length)
           throw new Error("Output length differs from argument-list length");
+      });
+
+      test("A program receives [] as initial input", async () => {
+        let receivedInitialInput;
+        const scriptExecutor = createScriptExecutor(payload => {
+          receivedInitialInput = payload;
+        });
+
+        await scriptExecutor("cmd");
+
+        if (!Array.isArray(receivedInitialInput))
+          throw new Error("The received initial input is not an array");
+        if (receivedInitialInput.length !== 0)
+          throw new Error("The received initial input is not empty");
       });
     </script>
   </body>
