@@ -4,14 +4,14 @@
 -->
 
 <script>
+  const params = new URLSearchParams(window.location.search);
+  const regex = new RegExp(params.get("regex"));
+  const replace = params.get("replace");
+
   window.onmessage = e => {
-    const params = new URLSearchParams(window.location.search);
-    const regex = new RegExp(params.get("regex"));
-    const replace = params.get("replace");
-    window.parent.postMessage(
-      ["print", e.data.join("\n").replace(regex, replace)],
-      "*"
-    );
+    e.data.forEach(line => {
+      window.parent.postMessage(["print", line.replace(regex, replace)], "*");
+    });
     window.parent.postMessage(["exit", 0], "*");
   };
 </script>

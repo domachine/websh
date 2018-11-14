@@ -1,12 +1,9 @@
 <pre id="text"></pre>
 <script>
   window.onmessage = e => {
-    document.getElementById("text").innerText = JSON.stringify(
-      e.data.join(""),
-      null,
-      2
-    );
-    window.parent.postMessage(["print", e.data], "*");
+    const text = e.data.join("\n");
+    document.getElementById("text").innerText = text;
+    window.parent.postMessage(["print", ...e.data], "*");
     window.parent.postMessage(["exit", 0], "*");
   };
 </script>
