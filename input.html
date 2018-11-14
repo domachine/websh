@@ -1,0 +1,18 @@
+<!--
+  This is a sample program that shows a text that can be used to
+  insert text to pass on to the next program in the pipeline.  The
+  textarea is prefilled with text passed along from the previous
+  program.
+-->
+
+<textarea id="textarea"></textarea>
+<button type="button" id="button">Send</button>
+<script>
+  window.onmessage = e => {
+    const textarea = document.getElementById("textarea");
+    if (e.data) textarea.value = e.data;
+    document.getElementById("button").onclick = () => {
+      window.parent.postMessage(textarea.value, "*");
+    };
+  };
+</script>

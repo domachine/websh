@@ -1,0 +1,16 @@
+{
+  "name": "websh",
+  "version": "1.0.0",
+  "description": "* Web.sh",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync start --startPath /prototype.html --server",
+    "test": "browser-sync start --startPath /tests.html --server -f \"*.html\" -f core"
+  },
+  "keywords": [],
+  "author": "Dominik Burgdörfer <db@burgdoerfer.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.26.3"
+  }
+}

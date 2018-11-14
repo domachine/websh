@@ -1,0 +1,7 @@
+<pre id="text"></pre>
+<script>
+  window.onmessage = e => {
+    document.getElementById("text").innerText = JSON.stringify(e.data, null, 2);
+    window.parent.postMessage(e.data, "*");
+  };
+</script>

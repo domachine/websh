@@ -1,0 +1,66 @@
+<html>
+  <head> </head>
+  <body style="background-color: black">
+    <script type="module">
+      import test from "./test.js";
+      import { parseScript, promiseReduce } from "./core/ScriptExecutor.js";
+
+      const assertCommandsAreEqual = (c0, c1) => {
+        if (c0.length !== c1.length)
+          throw new Error("AssertionError: invalid length");
+        c0.forEach((r, i) => {
+          if (r !== c1[i])
+            throw new Error('AssertionError: "' + r + '" !== "' + c1[i] + '"');
+        });
+      };
+
+      test("A sample script is being parsed as command", () => {
+        const command = [
+          "https://mysite.org/cat.html",
+          "http://mysecondsite.org/foo/bar?id=42"
+        ];
+        const script = command.join("   | ");
+
+        const result = parseScript(script);
+
+        assertCommandsAreEqual(command, result);
+      });
+
+      test("A script with quoted commands is being parsed as command", () => {
+        const command = [
+          "https://mysite.org/cat.html",
+          "http://mysecondsite.org/foo/bar?id=42"
+        ];
+        const script = command.map(c => `"${c}"`).join("   | ");
+
+        const result = parseScript(script);
+
+        assertCommandsAreEqual(command, result);
+      });
+
+      test("An array of values being promise reduced calls the fn with the initial value", async () => {
+        const values = ["1"];
+        let receivedArgs;
+        const fn = (...args) => {
+          receivedArgs = args;
+        };
+
+        await promiseReduce(values, fn, null);
+
+        if (receivedArgs[0] !== null || receivedArgs[1] !== values[0])
+          throw new Error("AssertionError: invalid arguments received");
+      });
+
+      test("An array of values being promise reduced returns the result", async () => {
+        const values = ["1"];
+        const expectedResult = "42";
+        const fn = (...args) => Promise.resolve(expectedResult);
+
+        const result = await promiseReduce(values, fn, null);
+
+        if (result !== expectedResult)
+          throw new Error("AssertionError: invalid result received");
+      });
+    </script>
+  </body>
+</html>

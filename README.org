@@ -1,0 +1,70 @@
+* Web.sh
+
+  This project aims to form kind of a shell for the web.  It connects
+  web-apps via window-messaging and let's you compose them like a
+  shell-script.
+** Run
+
+   #+BEGIN_SRC sh
+     npm install
+     npm start
+
+     # Now the browser opens. Just add your script as a query
+     # parameter. E.g.
+     #
+     # http://localhost:3000/prototype.html?eval=input.html | sed.html?regex=Foo&replace=bar | cat.html
+   #+END_SRC
+** Tests
+
+   #+BEGIN_SRC sh
+     npm install
+     npm test
+   #+END_SRC
+** User-Interface
+
+   The script is being inserted as a query param (~eval~) to the app.
+   In future versions it might be possible to pass scripts as url and
+   get them downloaded and executed automatically.
+** Shell language
+
+   The shell-language is designed to be lightweight and easy to
+   pick-up and learn.  It's heavily inspired by unix shell scripts.
+*** Example
+
+    #+BEGIN_SRC sh
+      # Pipelines
+      https://mypage.com/prompt-input | https://secondpage.com/
+
+      # Parameters
+      https://mypage.com/prompt-input?text=Hello%20world
+    #+END_SRC
+** Missing features
+   - Environment variables (pass shell-url to validate window
+     messages)
+   - Interactive shell
+   - Handle exit codes to end scripts prematurely if a command fails
+   - Collect command-output in array
+
+     To work towards the system-calls feature the command output
+     should be captured in an array which is then passed to the next
+     command. The change is therefore that each command needs to
+     expect an array as input.
+   - System calls
+
+     The system communication should be handled by sys-call-like
+     messages with the following syntax:
+
+     #+BEGIN_SRC javascript
+       ["print", { my: 'message' }]
+     #+END_SRC
+
+     - [ ] ~print~
+
+       This command sends an output chunk to the system.
+     - [ ] ~exit~
+
+       This command exits the currently running process and hands-over
+       an exit code.  A non-zero exit-code means failure.
+** Known issues
+   - Pipe characters in the query params to a command aren't handled
+     correctly
