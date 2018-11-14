@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "browser-sync start --startPath /prototype.html --server",
+    "dev": "concurrently -k -s first \"serve -n\" \"cypress open\"",
     "test": "browser-sync start --startPath /tests.html --server -f \"*.html\" -f core"
   },
   "keywords": [],
   "author": "Dominik Burgdörfer <db@burgdoerfer.com>",
   "license": "ISC",
   "devDependencies": {
-    "browser-sync": "^2.26.3"
+    "browser-sync": "^2.26.3",
+    "concurrently": "^4.0.1",
+    "cypress": "^3.1.1",
+    "serve": "^10.1.1"
   }
 }

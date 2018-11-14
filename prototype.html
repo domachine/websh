@@ -18,28 +18,11 @@
   <body>
     <iframe id="commandWindow"></iframe>
     <script type="module">
-      import { createScriptExecutor } from "./core/ScriptExecutor.js";
-
-      const scriptExecutor = createScriptExecutor(run);
-      window.runScript = scriptExecutor;
+      import scriptExecutor from "./core/ScriptExecutor.js";
 
       const params = new URLSearchParams(window.location.search);
       if (params.get("eval")) {
         scriptExecutor(params.get("eval"));
-      }
-
-      function run(payload, command) {
-        return new Promise(resolve => {
-          const iframe = document.getElementById("commandWindow");
-          window.onmessage = e => {
-            if (e.source !== iframe.contentWindow) return;
-            resolve(e.data);
-          };
-          iframe.src = command;
-          iframe.onload = () => {
-            iframe.contentWindow.postMessage(payload, "*");
-          };
-        });
       }
     </script>
   </body>

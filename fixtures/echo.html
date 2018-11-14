@@ -1,0 +1,5 @@
+<pre id="text"></pre>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  window.parent.postMessage(params.get("text"), "*");
+</script>

@@ -1,3 +1,5 @@
+import runner from "../iframe/Runner.js";
+
 export const parseScript = script => {
   return script
     .split("|")
@@ -13,3 +15,7 @@ export const promiseReduce = (array, fn, seed) =>
 
 export const createScriptExecutor = runner => script =>
   promiseReduce(parseScript(script), runner, null);
+
+const scriptExecutor = createScriptExecutor(runner);
+
+export default scriptExecutor;
