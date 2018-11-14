@@ -10,9 +10,10 @@
 <script>
   window.onmessage = e => {
     const textarea = document.getElementById("textarea");
-    if (e.data) textarea.value = e.data;
+    if (e.data.length) textarea.value = e.data.join("\n");
     document.getElementById("button").onclick = () => {
-      window.parent.postMessage(textarea.value, "*");
+      window.parent.postMessage(["print", textarea.value], "*");
+      window.parent.postMessage(["exit", 0], "*");
     };
   };
 </script>

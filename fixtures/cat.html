@@ -6,6 +6,7 @@
       null,
       2
     );
-    window.parent.postMessage(e.data, "*");
+    window.parent.postMessage(["print", e.data], "*");
+    window.parent.postMessage(["exit", 0], "*");
   };
 </script>

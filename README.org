@@ -38,6 +38,22 @@
       # Parameters
       https://mypage.com/prompt-input?text=Hello%20world
     #+END_SRC
+** System calls
+
+   The system communication is handled by sys-call-like messages with
+   the following syntax:
+
+   #+BEGIN_SRC javascript
+     ["print", { my: 'message' }]
+   #+END_SRC
+
+   - ~print(<chunks>, ...)~
+
+     This command sends output chunks to the system.
+   - ~exit(<exitCode>)~
+
+     This command exits the currently running process and hands-over
+     an exit code.  A non-zero exit-code means failure.
 ** Missing features
    - Environment variables (pass shell-url to validate window
      messages)
@@ -49,22 +65,6 @@
      +should be captured in an array which is then passed to the next+
      +command. The change is therefore that each command needs to+
      +expect an array as input.+
-   - System calls
-
-     The system communication should be handled by sys-call-like
-     messages with the following syntax:
-
-     #+BEGIN_SRC javascript
-       ["print", { my: 'message' }]
-     #+END_SRC
-
-     - [ ] ~print~
-
-       This command sends an output chunk to the system.
-     - [ ] ~exit~
-
-       This command exits the currently running process and hands-over
-       an exit code.  A non-zero exit-code means failure.
 ** Known issues
    - Pipe characters in the query params to a command aren't handled
      correctly
