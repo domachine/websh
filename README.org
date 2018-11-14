@@ -10,9 +10,9 @@
      npm start
 
      # Now the browser opens. Just add your script as a query
-     # parameter. E.g.
+     # parameter (Make sure to escape properly). E.g.
      #
-     # http://localhost:3000/prototype.html?eval=input.html | sed.html?regex=Foo&replace=bar | cat.html
+     # http://localhost:3000/?eval=input.html | sed.html%3Fregex%3DFoo%26replace%3Dbar | cat.html
    #+END_SRC
 ** Tests
 
