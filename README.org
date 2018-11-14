@@ -43,12 +43,12 @@
      messages)
    - Interactive shell
    - Handle exit codes to end scripts prematurely if a command fails
-   - Collect command-output in array
+   - +Collect command-output in array+
 
-     To work towards the system-calls feature the command output
-     should be captured in an array which is then passed to the next
-     command. The change is therefore that each command needs to
-     expect an array as input.
+     +To work towards the system-calls feature the command output+
+     +should be captured in an array which is then passed to the next+
+     +command. The change is therefore that each command needs to+
+     +expect an array as input.+
    - System calls
 
      The system communication should be handled by sys-call-like

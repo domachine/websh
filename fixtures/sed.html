@@ -8,6 +8,6 @@
     const params = new URLSearchParams(window.location.search);
     const regex = new RegExp(params.get("regex"));
     const replace = params.get("replace");
-    window.parent.postMessage(e.data.replace(regex, replace), "*");
+    window.parent.postMessage(e.data.join("\n").replace(regex, replace), "*");
   };
 </script>
