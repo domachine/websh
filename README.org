@@ -38,58 +38,67 @@
       # Parameters
       https://mypage.com/prompt-input?text=Hello%20world
     #+END_SRC
-** System calls
+** Program interface
 
-   The system communication is handled by sys-call-like messages with
-   the following syntax:
+   A scripts executes multiple so-called programs. These programs are
+   web-apps that utilize the window messaging API to communicate with
+   the system.
+*** Execution-flow
 
-   #+BEGIN_SRC javascript
-     ["print", { my: 'message' }]
-   #+END_SRC
+    - The program is being loaded in an ~iframe~
+    - Then the content from the standard-input is being transmitted to
+      the content-window of the iframe using the following command:
 
-   - ~print(<chunks>, ...)~
+      #+BEGIN_SRC js
+        iframe.contentWindow.postMessage(["stdin", [] /* Array of input lines */])
+      #+END_SRC
 
-     This command sends output chunks to the system.
-   - ~exit(<exitCode>)~
+      This ~Array of input lines~ is an array filled with data from
+      the output that the previous program generated.  If this is the
+      first program being executed the ~Array of input lines~ is an
+      empty array.
+    - The program should then use the input (or ignore if not need)
+      and generate output using the ~print~ [[*System%20calls][system-call]]:
 
-     This command exits the currently running process and hands-over
-     an exit code.  A non-zero exit-code means failure.
+      #+BEGIN_SRC js
+        window.parent.postMessage(["print", "Sample output" /* The output data */])
+      #+END_SRC
+
+      The ~print~ system-call can be multiple times to generate
+      multiple "output lines".
+    - Once the program finishes it should use the ~exit~ system-call
+      to handover the execution back to the system so that the next
+      program can be called.
+*** System calls
+
+    The system communication is handled by sys-call-like messages with
+    the following syntax:
+
+    #+BEGIN_SRC javascript
+      ["print", { my: 'message' }]
+    #+END_SRC
+
+    - ~print(<chunks>, ...)~
+
+      This command sends output chunks to the system.
+    - ~exit(<exitCode>)~
+
+      This command exits the currently running process and hands-over
+      an exit code.  A non-zero exit-code means failure and stops the
+      execution of the script immediately.
 ** Missing features / Todo
 
-   - +Refactor stdin interface+
-
-     +Currently the message for the input of the program is designed to+
-     +be the whole message sent to the iframe.  This should rather look+
-     +like this:+
-
-     +#+BEGIN_SRC js+
-       +["stdin", <message>]+
-     +#+END_SRC+
-
-     +This has the advantage that the protocol can be extended in the+
-     +future.+
-   - +Remove `eval` query-param (See [[*Security%20implications][Security implications]]).+
    - Environment variables (pass shell-url to validate window
      messages)
    - Interactive shell
 
      This should be implemented as a plugin (See [[*Plugin-system][Plugin-system]]).
-   - +Handle exit codes to end scripts prematurely if a command fails+
-   - +Collect command-output in array+
-
-     +To work towards the system-calls feature the command output+
-     +should be captured in an array which is then passed to the next+
-     +command. The change is therefore that each command needs to+
-     +expect an array as input.+
 ** Known issues
 
    - Pipe characters in the query params to a command aren't handled
      correctly
 ** Security implications
 
-   - +The `eval` query param is a security issue.  It makes it possible+
-     +to inject code into a user-space by composing a link and making+
-     +the user click it.+
    - Commands that operate on sensible user-data should use the second
      parameter of ~window.parent.postMessage()~ to avoid sending data
      to malicious targets.
