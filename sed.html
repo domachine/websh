@@ -9,7 +9,9 @@
   const replace = params.get("replace");
 
   window.onmessage = e => {
-    e.data.forEach(line => {
+    if (e.data[0] !== "stdin") return;
+    const stdin = e.data[1];
+    stdin.forEach(line => {
       window.parent.postMessage(["print", line.replace(regex, replace)], "*");
     });
     window.parent.postMessage(["exit", 0], "*");

@@ -5,11 +5,13 @@
 
 <script>
   window.onmessage = e => {
+    if (e.data[0] !== "stdin") return;
+    const stdin = e.data[1];
     const params = new URLSearchParams(window.location.search);
     const regex = new RegExp(params.get("regex"));
     const replace = params.get("replace");
     window.parent.postMessage(
-      ["print", e.data.join("\n").replace(regex, replace)],
+      ["print", stdin.join("\n").replace(regex, replace)],
       "*"
     );
     window.parent.postMessage(["exit", 0], "*");

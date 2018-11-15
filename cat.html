@@ -1,9 +1,11 @@
 <pre id="text"></pre>
 <script>
   window.onmessage = e => {
-    const text = e.data.join("\n");
+    if (e.data[0] !== "stdin") return;
+    const stdin = e.data[1];
+    const text = stdin.join("\n");
     document.getElementById("text").innerText = text;
-    window.parent.postMessage(["print", ...e.data], "*");
+    window.parent.postMessage(["print", ...stdin], "*");
     window.parent.postMessage(["exit", 0], "*");
   };
 </script>

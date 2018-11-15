@@ -9,8 +9,10 @@
 <button type="button" id="button">Send</button>
 <script>
   window.onmessage = e => {
+    if (e.data[0] !== "stdin") return;
+    const stdin = e.data[1];
     const textarea = document.getElementById("textarea");
-    if (e.data.length) textarea.value = e.data.join("\n");
+    if (stdin.length) textarea.value = stdin.join("\n");
     document.getElementById("button").onclick = () => {
       window.parent.postMessage(["print", textarea.value], "*");
       window.parent.postMessage(["exit", 0], "*");
