@@ -56,6 +56,18 @@
      an exit code.  A non-zero exit-code means failure.
 ** Missing features / Todo
 
+   - Refactor stdin interface
+
+     Currently the message for the input of the program is designed to
+     be the whole message sent to the iframe.  This should rather look
+     like this:
+
+     #+BEGIN_SRC js
+       ["stdin", <message>]
+     #+END_SRC
+
+     This has the advantage that the protocol can be extended in the
+     future.
    - Remove `eval` query-param (See [[*Security%20implications][Security implications]]).
    - Environment variables (pass shell-url to validate window
      messages)
