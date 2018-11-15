@@ -74,7 +74,7 @@
    - Interactive shell
 
      This should be implemented as a plugin (See [[*Plugin-system][Plugin-system]]).
-   - Handle exit codes to end scripts prematurely if a command fails
+   - +Handle exit codes to end scripts prematurely if a command fails+
    - +Collect command-output in array+
 
      +To work towards the system-calls feature the command output+

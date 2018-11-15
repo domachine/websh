@@ -20,4 +20,17 @@ describe("Websh", () => {
 
       .then(result => expect(result).to.deep.equal([["Foo", "Bar"]]));
   });
+
+  it("Rejects the promise if a command fails", () => {
+    cy.visit("http://localhost:5000")
+      .window()
+      .then(win =>
+        win.Websh("fixtures/fail | fixtures/echo?text=Foo").then(
+          () => {
+            throw new Error("Expected failure");
+          },
+          () => {}
+        )
+      );
+  });
 });
