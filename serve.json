@@ -1,0 +1,17 @@
+{
+  "headers": [
+    {
+      "source": "**/*",
+      "headers": [
+        {
+          "key": "cache-control",
+          "value": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+        },
+        {
+          "key": "expires",
+          "value": "0"
+        }
+      ]
+    }
+  ]
+}
