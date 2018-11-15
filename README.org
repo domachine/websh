@@ -9,10 +9,10 @@
      npm install
      npm start
 
-     # Now the browser opens. Just add your script as a query
-     # parameter (Make sure to escape properly). E.g.
+     # Now the browser opens. Open up a js console and execute a script
+     # with the following code:
      #
-     # http://localhost:3000/?eval=input | sed%3Fregex%3DFoo%26replace%3Dbar | cat
+     #   Websh('input | sed?regex=Foo&replace=bar | cat')
    #+END_SRC
 ** Tests
 
@@ -22,9 +22,9 @@
    #+END_SRC
 ** User-Interface
 
-   The script is being inserted as a query param (~eval~) to the app.
-   In future versions it might be possible to pass scripts as url and
-   get them downloaded and executed automatically.
+   A script can be executed from a js console using the `Websh`
+   function which accepts the script as a string and returnes a
+   promise.
 ** Shell language
 
    The shell-language is designed to be lightweight and easy to
@@ -68,7 +68,7 @@
 
      +This has the advantage that the protocol can be extended in the+
      +future.+
-   - Remove `eval` query-param (See [[*Security%20implications][Security implications]]).
+   - +Remove `eval` query-param (See [[*Security%20implications][Security implications]]).+
    - Environment variables (pass shell-url to validate window
      messages)
    - Interactive shell
@@ -87,9 +87,9 @@
      correctly
 ** Security implications
 
-   - The `eval` query param is a security issue.  It makes it possible
-     to inject code into a user-space by composing a link and making
-     the user click it.
+   - +The `eval` query param is a security issue.  It makes it possible+
+     +to inject code into a user-space by composing a link and making+
+     +the user click it.+
    - Commands that operate on sensible user-data should use the second
      parameter of `window.parent.postMessage()` to avoid sending data
      to malicious targets.

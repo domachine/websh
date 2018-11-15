@@ -21,11 +21,6 @@
       import scriptExecutor from "./core/ScriptExecutor.js";
 
       window.Websh = scriptExecutor;
-
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("eval")) {
-        scriptExecutor(params.get("eval"));
-      }
     </script>
   </body>
 </html>
