@@ -54,10 +54,14 @@
 
      This command exits the currently running process and hands-over
      an exit code.  A non-zero exit-code means failure.
-** Missing features
+** Missing features / Todo
+
+   - Remove `eval` query-param (See [[*Security%20implications][Security implications]]).
    - Environment variables (pass shell-url to validate window
      messages)
    - Interactive shell
+
+     This should be implemented as a plugin (See [[*Plugin-system][Plugin-system]]).
    - Handle exit codes to end scripts prematurely if a command fails
    - +Collect command-output in array+
 
@@ -66,5 +70,26 @@
      +command. The change is therefore that each command needs to+
      +expect an array as input.+
 ** Known issues
+
    - Pipe characters in the query params to a command aren't handled
      correctly
+** Security implications
+
+   - The `eval` query param is a security issue.  It makes it possible
+     to inject code into a user-space by composing a link and making
+     the user click it.
+   - Commands that operate on sensible user-data should use the second
+     parameter of `window.parent.postMessage()` to avoid sending data
+     to malicious targets.
+** Thoughts / ideas
+
+*** Plugin-system
+
+    Provide a plugin-system that loads foreign modules via `import()`.
+    The idea comes from offering an IDE for user-authored scripts
+    (stored in the localStorage/indexedDB).  These scripts could then
+    be executed through the interface that is exposed on the `window`.
+
+    This plugin-system might even be possible without modification
+    since it could be encouraged to directly edit the `index.html` of
+    the project.  But it should be cleaned up.
