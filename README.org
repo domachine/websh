@@ -12,7 +12,7 @@
      # Now the browser opens. Open up a js console and execute a script
      # with the following code:
      #
-     #   Websh('input | sed?regex=Foo&replace=bar | cat')
+     #   Websh('examples/input | examples/sed?regex=Foo&replace=bar | examples/cat')
    #+END_SRC
 ** Tests
 
