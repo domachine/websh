@@ -22,7 +22,7 @@
    #+END_SRC
 ** User-Interface
 
-   A script can be executed from a js console using the `Websh`
+   A script can be executed from a js console using the ~Websh~
    function which accepts the script as a string and returnes a
    promise.
 ** Shell language
@@ -91,17 +91,17 @@
      +to inject code into a user-space by composing a link and making+
      +the user click it.+
    - Commands that operate on sensible user-data should use the second
-     parameter of `window.parent.postMessage()` to avoid sending data
+     parameter of ~window.parent.postMessage()~ to avoid sending data
      to malicious targets.
 ** Thoughts / ideas
 
 *** Plugin-system
 
-    Provide a plugin-system that loads foreign modules via `import()`.
+    Provide a plugin-system that loads foreign modules via ~import()~.
     The idea comes from offering an IDE for user-authored scripts
     (stored in the localStorage/indexedDB).  These scripts could then
-    be executed through the interface that is exposed on the `window`.
+    be executed through the interface that is exposed on the ~window~.
 
     This plugin-system might even be possible without modification
-    since it could be encouraged to directly edit the `index.html` of
+    since it could be encouraged to directly edit the ~index.html~ of
     the project.  But it should be cleaned up.
