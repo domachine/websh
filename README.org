@@ -93,6 +93,9 @@
    - Interactive shell
 
      This should be implemented as a plugin (See [[*Plugin-system][Plugin-system]]).
+   - The shell web-app should itself act like a program. E.g. sent the
+     input to the first program and send back the output to the
+     calling system.
 ** Known issues
 
    - Pipe characters in the query params to a command aren't handled
