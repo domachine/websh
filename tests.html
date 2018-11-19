@@ -8,7 +8,7 @@
         promiseReduce,
         createScriptExecutor
       } from "./core/ScriptExecutor.js";
-      import systemCallExecutor from "./core/SystemCallExecutor.js";
+      import Runtime from "./core/Runtime.js";
 
       const assertCommandsAreEqual = (c0, c1) => {
         if (c0.length !== c1.length)
@@ -67,15 +67,6 @@
           throw new Error("AssertionError: invalid result received");
       });
 
-      test("A 'print' syscall prints all arguments", () => {
-        const args = ["My first line", "My second line"];
-
-        const output = systemCallExecutor([], "print", args);
-
-        if (args.length !== output.length)
-          throw new Error("Output length differs from argument-list length");
-      });
-
       test("A program receives [] as initial input", async () => {
         let receivedInitialInput;
         const scriptExecutor = createScriptExecutor(payload => {
@@ -88,6 +79,40 @@
           throw new Error("The received initial input is not an array");
         if (receivedInitialInput.length !== 0)
           throw new Error("The received initial input is not empty");
+      });
+
+      test("A 'print' syscall prints all arguments", () => {
+        const args = ["My first line", "My second line"];
+        const runtime = new Runtime();
+        let output;
+        const expectations = [];
+
+        runtime.onload = o => {
+          output = o;
+        };
+        runtime.postMessage(["print", ...args]);
+        runtime.postMessage(["exit", 0]);
+
+        if (
+          output[0] !== args[0] ||
+          output[1] !== args[1] ||
+          output.length !== args.length
+        ) {
+          throw new Error("Output differs from expectation");
+        }
+      });
+
+      test("An exit command with exit code 1 lets the script fail", () => {
+        const runtime = new Runtime();
+        let error;
+
+        runtime.onerror = err => {
+          error = err;
+        };
+        runtime.postMessage(["exit", 1]);
+
+        if (error == null || !(error instanceof Error))
+          throw new Error("Expected the script to fail");
       });
     </script>
   </body>
