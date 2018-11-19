@@ -1,4 +1,4 @@
-describe("Websh", () => {
+describe("InlineIframeDriver", () => {
   it("Executes a sample script", () => {
     const script =
       "fixtures/echo?text=Foo | fixtures/sed?regex=Foo&replace=Bar | fixtures/cat";
@@ -32,5 +32,14 @@ describe("Websh", () => {
           () => {}
         )
       );
+  });
+
+  it("Renders only one iframe for multiple executions", () => {
+    cy.visit("http://localhost:5000")
+      .window()
+      .then(win => win.Websh("fixtures/echo"))
+      .window()
+      .then(win => win.Websh("fixtures/echo"));
+    cy.get("iframe").should("have.lengthOf", 1);
   });
 });
