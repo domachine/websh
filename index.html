@@ -16,11 +16,10 @@
     </style>
   </head>
   <body>
-    <iframe id="commandWindow"></iframe>
     <script type="module">
-      import scriptExecutor from "./core/ScriptExecutor.js";
+      import websh from "./Websh.js";
 
-      window.Websh = scriptExecutor;
+      window.Websh = websh();
     </script>
   </body>
 </html>
