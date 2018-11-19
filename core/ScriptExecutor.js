@@ -1,5 +1,3 @@
-import inlineIframeDriver from "../drivers/InlineIframeDriver.js";
-
 export const parseScript = script => {
   return script
     .split("|")
@@ -13,9 +11,7 @@ export const promiseReduce = (array, fn, seed) =>
     Promise.resolve(seed)
   );
 
-export const createScriptExecutor = runner => script =>
+export const scriptExecutor = (script, runner) =>
   promiseReduce(parseScript(script), runner, []);
-
-const scriptExecutor = createScriptExecutor(inlineIframeDriver());
 
 export default scriptExecutor;

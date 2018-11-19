@@ -3,10 +3,9 @@
   <body style="background-color: black">
     <script type="module">
       import test from "./test.js";
-      import {
+      import scriptExecutor, {
         parseScript,
-        promiseReduce,
-        createScriptExecutor
+        promiseReduce
       } from "./core/ScriptExecutor.js";
       import Runtime from "./core/Runtime.js";
 
@@ -69,11 +68,10 @@
 
       test("A program receives [] as initial input", async () => {
         let receivedInitialInput;
-        const scriptExecutor = createScriptExecutor(payload => {
+
+        await scriptExecutor("cmd", payload => {
           receivedInitialInput = payload;
         });
-
-        await scriptExecutor("cmd");
 
         if (!Array.isArray(receivedInitialInput))
           throw new Error("The received initial input is not an array");
