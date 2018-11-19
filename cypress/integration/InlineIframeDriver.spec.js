@@ -42,4 +42,19 @@ describe("InlineIframeDriver", () => {
       .then(win => win.Websh("fixtures/echo"));
     cy.get("iframe").should("have.lengthOf", 1);
   });
+
+  it("Styles the iframe to full size", () => {
+    cy.visit("http://localhost:5000");
+
+    cy.get("iframe")
+      .should(
+        "have.attr",
+        "style",
+        "border: none; width: 100vw; height: 100vh;"
+      )
+      .get("html")
+      .should("have.attr", "style", "margin: 0px; padding: 0px;")
+      .get("body")
+      .should("have.attr", "style", "margin: 0px; padding: 0px;");
+  });
 });
