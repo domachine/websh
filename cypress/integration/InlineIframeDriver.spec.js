@@ -1,52 +1,48 @@
 describe("InlineIframeDriver", () => {
-  it("Executes a sample script", () => {
-    const script =
-      "fixtures/echo?text=Foo | fixtures/sed?regex=Foo&replace=Bar | fixtures/cat";
-
-    cy.visit("http://localhost:5000")
+  const websh = () =>
+    cy
       .window()
-      .invoke("Websh", script)
+      .its("Websh")
+      .then(Websh => Websh());
 
+  beforeEach(() => cy.visit("http://localhost:5000/fixtures/testbed"));
+
+  it("Executes a sample script", () => {
+    const script = "echo?text=Foo | sed?regex=Foo&replace=Bar | cat";
+
+    websh()
+      .then(executeScript => executeScript(script))
       .then(result => expect(result).to.deep.equal([["Bar"]]));
   });
 
   it("Executes a sample script and passes two-lined output correctly", () => {
-    const script =
-      "fixtures/output-two-lines?first=Foo&second=Bar | fixtures/cat";
+    const script = "output-two-lines?first=Foo&second=Bar | cat";
 
-    cy.visit("http://localhost:5000")
-      .window()
-      .invoke("Websh", script)
-
+    websh()
+      .then(executeScript => executeScript(script))
       .then(result => expect(result).to.deep.equal([["Foo", "Bar"]]));
   });
 
   it("Rejects the promise if a command fails", () => {
-    cy.visit("http://localhost:5000")
-      .window()
-      .then(win =>
-        win.Websh("fixtures/fail | fixtures/echo?text=Foo").then(
-          () => {
-            throw new Error("Expected failure");
-          },
-          () => {}
-        )
-      );
+    websh().then(websh =>
+      websh("fail | echo?text=Foo").then(
+        () => {
+          throw new Error("Expected failure");
+        },
+        () => {}
+      )
+    );
   });
 
   it("Renders only one iframe for multiple executions", () => {
-    cy.visit("http://localhost:5000")
-      .window()
-      .then(win => win.Websh("fixtures/echo"))
-      .window()
-      .then(win => win.Websh("fixtures/echo"));
+    websh().then(websh => websh("echo").then(() => websh("echo")));
+
     cy.get("iframe").should("have.lengthOf", 1);
   });
 
   it("Styles the iframe to full size", () => {
-    cy.visit("http://localhost:5000");
-
-    cy.get("iframe")
+    websh()
+      .get("iframe")
       .should(
         "have.attr",
         "style",
