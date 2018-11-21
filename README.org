@@ -98,6 +98,9 @@
    - The shell web-app should itself act like a program. E.g. sent the
      input to the first program and send back the output to the
      calling system.
+   - The shell web-app should pass unknown window messages through to
+     the parent window and the running child vice-versa.  This makes
+     the messaging protocol extensible.
 ** Known issues
 
    - Pipe characters in the query params to a command aren't handled
