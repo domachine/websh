@@ -21,6 +21,7 @@ describe("IframeDriver", () => {
     websh()
       .then(executeScript => executeScript(script))
       .then(result => expect(result).to.deep.equal([["Bar"]]));
+
     cy.get("iframe").should("have.lengthOf", 1);
   });
 });
