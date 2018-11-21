@@ -25,6 +25,11 @@
    A script can be executed from a js console using the ~Websh~
    function which accepts the script as a string and returnes a
    promise.
+*** Interactive shell
+
+    An interactive shell to execute typed scripts is available in
+    ~shell/~.  It's accessible after running the ~npm start~ command
+    on ~http://localhost:3000/shell/~.
 ** Shell language
 
    The shell-language is designed to be lightweight and easy to
@@ -90,9 +95,6 @@
 
    - Environment variables (pass shell-url to validate window
      messages)
-   - Interactive shell
-
-     This should be implemented as a plugin (See [[*Plugin-system][Plugin-system]]).
    - The shell web-app should itself act like a program. E.g. sent the
      input to the first program and send back the output to the
      calling system.

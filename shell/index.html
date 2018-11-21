@@ -1,0 +1,95 @@
+<style>
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    position: relative;
+  }
+
+  .monospace {
+    font-family: monospace;
+  }
+
+  .db {
+    display: block;
+  }
+
+  .ba {
+    border: 1px solid black;
+  }
+
+  .bn {
+    border: none;
+  }
+
+  .w-100 {
+    width: 100%;
+  }
+
+  .h-100 {
+    height: 100%;
+  }
+
+  .min-vh-100 {
+    min-height: 100vh;
+  }
+
+  .absolute {
+    position: absolute;
+  }
+
+  .flex-grow {
+    flex: 1;
+  }
+
+  .border-box {
+    box-sizing: border-box;
+  }
+
+  .pa2 {
+    padding: 1.2em;
+  }
+
+  .ph2 {
+    padding-left: 1.2em;
+    padding-right: 1.2em;
+  }
+
+  .pb2 {
+    padding-bottom: 1.2em;
+  }
+
+  .pa1 {
+    padding: 0.7em;
+  }
+
+  .f5 {
+    font-size: 1.2em;
+  }
+</style>
+<div class="container min-vh-100">
+  <div class="pa2 border-box">
+    <input class="f5 monospace border-box db w-100 ba ma pa1" name="prompt" />
+  </div>
+  <div class="ph2 pb2 border-box">
+    <iframe class="flex-grow db bn w-100"></iframe>
+  </div>
+</div>
+<script type="module">
+  import Websh, { iframeDriver } from "../Websh.js";
+
+  const iframe = document.querySelector("iframe");
+  const websh = Websh(iframeDriver(iframe));
+  const prompt = document.querySelector('[name="prompt"]');
+  prompt.onkeyup = async e => {
+    if (e.keyCode === 13) {
+      await websh(prompt.value);
+    }
+  };
+</script>
