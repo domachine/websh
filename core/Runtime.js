@@ -3,7 +3,7 @@ class Runtime {
     this.output = [];
   }
 
-  postMessage(msg) {
+  handleMessage(msg) {
     if (msg[0] === "exit") {
       if (msg[1]) this.onerror(new Error("Script failed"));
       else this.onload(this.output);

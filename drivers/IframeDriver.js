@@ -8,7 +8,7 @@ const iframeDriver = iframe => {
       runtime.onload = resolve;
       window.onmessage = e => {
         if (e.source !== iframe.contentWindow) return;
-        runtime.postMessage(e.data);
+        runtime.handleMessage(e.data);
       };
       iframe.src = command;
       iframe.onload = () => {

@@ -88,8 +88,8 @@
         runtime.onload = o => {
           output = o;
         };
-        runtime.postMessage(["print", ...args]);
-        runtime.postMessage(["exit", 0]);
+        runtime.handleMessage(["print", ...args]);
+        runtime.handleMessage(["exit", 0]);
 
         if (
           output[0] !== args[0] ||
@@ -107,7 +107,7 @@
         runtime.onerror = err => {
           error = err;
         };
-        runtime.postMessage(["exit", 1]);
+        runtime.handleMessage(["exit", 1]);
 
         if (error == null || !(error instanceof Error))
           throw new Error("Expected the script to fail");
