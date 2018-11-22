@@ -9,10 +9,10 @@
      npm install
      npm start
 
-     # Now the browser opens. Open up a js console and execute a script
-     # with the following code:
+     # Now the browser opens. Use the interactive prompt to type in your
+     # script and hit enter. E.g.:
      #
-     #   Websh('examples/input | examples/sed?regex=Foo&replace=bar | examples/cat')
+     # examples/input | examples/sed?regex=Foo&replace=bar | examples/cat
    #+END_SRC
 ** Tests
 
