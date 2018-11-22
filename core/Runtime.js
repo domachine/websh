@@ -1,14 +1,23 @@
 class Runtime {
   constructor() {
     this.output = [];
+    this.commands = {
+      exit: exitCode => {
+        if (exitCode) this.onerror(new Error("Script failed"));
+        else this.onload(this.output);
+      },
+
+      print: (...args) => {
+        this.output = this.output.concat(args);
+      }
+    };
   }
 
   handleMessage(msg) {
-    if (msg[0] === "exit") {
-      if (msg[1]) this.onerror(new Error("Script failed"));
-      else this.onload(this.output);
-    } else if (msg[0] === "print") {
-      this.output = this.output.concat(msg.slice(1));
+    const command = this.commands[msg[0]];
+    if (command) {
+      command.apply(this, msg.slice(1));
+      return true;
     }
   }
 }

@@ -112,6 +112,31 @@
         if (error == null || !(error instanceof Error))
           throw new Error("Expected the script to fail");
       });
+
+      test("An unknown command is ignored by the runtime", () => {
+        const runtime = new Runtime();
+        let output;
+        runtime.onload = o => {
+          output = o;
+        };
+
+        const handled = runtime.handleMessage(["unknown-message"]);
+        runtime.handleMessage(["exit", 0]);
+
+        if (output.length) throw new Error("Received unexpected output");
+        if (handled)
+          throw new Error("Expected the message to be marked as ignored");
+      });
+
+      test("For a known command the runtime returns a truthy value", () => {
+        const runtime = new Runtime();
+        runtime.onload = () => {};
+
+        const handled = runtime.handleMessage(["exit", 0]);
+
+        if (!handled)
+          throw new Error("The returned value was expected to be truthy");
+      });
     </script>
   </body>
 </html>
