@@ -19,7 +19,7 @@
     "README.org",
     "COPYING"
   ],
-  "homepage": "https://github.com/domachine/websh/tree/master/websh#readme",
+  "homepage": "https://github.com/domachine/websh/tree/master#readme",
   "repository": {
     "type" : "git",
     "url" : "https://github.com/domachine/websh.git"
