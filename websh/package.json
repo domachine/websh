@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently -k -s first \"serve -n\" \"cypress open\"",
-    "test": "browser-sync start --startPath /tests.html --server -f \"*.html\" -f core"
+    "test": "browser-sync start --startPath /tests/ --server -f tests -f src"
   },
   "keywords": [
     "shell",
