@@ -1,13 +1,18 @@
 {
   "name": "websh",
   "version": "1.0.0",
-  "description": "* Web.sh",
+  "description": "websh is a javascript library to compose websites.",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently -k -s first \"serve -n\" \"cypress open\"",
     "test": "browser-sync start --startPath /tests.html --server -f \"*.html\" -f core"
   },
-  "keywords": [],
+  "keywords": [
+    "shell",
+    "scripting",
+    "compose",
+    "websites"
+  ],
   "author": "Dominik Burgdörfer <db@burgdoerfer.com>",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
