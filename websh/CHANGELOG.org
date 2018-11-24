@@ -1,0 +1,4 @@
+* websh changelog
+** <2018-11-24 Sa> 1.0.0
+
+   Initial release.
