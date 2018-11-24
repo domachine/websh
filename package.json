@@ -1,6 +1,6 @@
 {
   "name": "websh",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "websh is a javascript library to compose websites.",
   "module": "websh.js",
   "main": "websh.js",
@@ -21,8 +21,8 @@
   ],
   "homepage": "https://github.com/domachine/websh/tree/master#readme",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/domachine/websh.git"
+    "type": "git",
+    "url": "https://github.com/domachine/websh.git"
   },
   "author": "Dominik Burgdörfer <db@burgdoerfer.com>",
   "license": "GPL-3.0-or-later",
