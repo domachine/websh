@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "Dominik Burgdörfer <db@burgdoerfer.com>",
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "devDependencies": {
     "browser-sync": "^2.26.3",
     "concurrently": "^4.0.1",
