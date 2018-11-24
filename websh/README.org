@@ -3,33 +3,49 @@
   This project aims to form kind of a shell for the web.  It connects
   web-apps via window-messaging and let's you compose them like a
   shell-script.
-** Run
-
-   #+BEGIN_SRC sh
-     npm install
-     npm start
-
-     # Now the browser opens. Use the interactive prompt to type in your
-     # script and hit enter. E.g.:
-     #
-     # examples/input | examples/sed?regex=Foo&replace=bar | examples/cat
-   #+END_SRC
 ** Tests
 
    #+BEGIN_SRC sh
      npm install
      npm test
    #+END_SRC
-** User-Interface
+** API
 
-   A script can be executed from a js console using the ~Websh~
-   function which accepts the script as a string and returnes a
-   promise.
-*** Interactive shell
+   All public symbols are exported from the ~Websh.js~ module in the
+   root of the repository.  All other modules should be considered
+   private and subject to change.
+*** ~websh(driver?: Driver = inlineIframeDriver()): Websh~
 
-    An interactive shell to execute typed scripts is available in
-    ~shell/~.  It's accessible after running the ~npm start~ command
-    on ~http://localhost:3000/shell/~.
+    This function is the default export of the module and the
+    constructor for shell instances.  Each shell instance closes over
+    a driver that abstracts the mechanism to talk to an iframe
+    instance.  The default driver ~inlineIframeDriver~ creates a
+    full-screen iframe automatically and uses it as output.  If you
+    need more control over the creation and the style of the iframe
+    use the ~iframeDriver~.  The function returns a `Websh` instance
+    which is a function that expects the script as a string argument.
+
+    #+BEGIN_SRC js
+      import websh from './Websh.js'
+
+      const sh = websh()
+      sh('examples/input | examples/sed?regex=Foo&replace=bar | examples/cat')
+        .then(output => {
+          console.log(output)  // This is the received output
+        })
+    #+END_SRC
+*** ~iframeDriver(iframeElement: DOMElement): Driver~
+
+    This is a more flexible driver than the default
+    ~inlineIframeDriver~ which let's you control the iframe yourself.
+
+    #+BEGIN_SRC js
+      import websh, { iframeDriver } from './Websh.js'
+
+      const driver = iframeDriver(document.getElementById('my-iframe'))
+      const sh = websh(driver)
+      // ...
+    #+END_SRC
 ** Shell language
 
    The shell-language is designed to be lightweight and easy to
