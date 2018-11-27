@@ -20,21 +20,27 @@
 
 import Runtime from "../core/Runtime.js";
 
-const iframeDriver = iframe => {
-  return (payload, command) =>
-    new Promise((resolve, reject) => {
-      const runtime = new Runtime();
-      runtime.onerror = reject;
-      runtime.onload = resolve;
-      window.onmessage = e => {
-        if (e.source !== iframe.contentWindow) return;
-        runtime.handleMessage(e.data);
-      };
-      iframe.src = command;
-      iframe.onload = () => {
-        iframe.contentWindow.postMessage(["stdin", payload], "*");
-      };
-    });
+const iframeDriver = iframe => (payload, command) => {
+  const runtime = new Runtime();
+  const onmessage = e => {
+    if (e.source !== iframe.contentWindow) return;
+    runtime.handleMessage(e.data);
+  };
+  const onload = () => {
+    iframe.contentWindow.postMessage(["stdin", payload], "*");
+  };
+
+  window.addEventListener("message", onmessage);
+  iframe.addEventListener("load", onload);
+
+  return new Promise((resolve, reject) => {
+    runtime.onerror = reject;
+    runtime.onload = resolve;
+    iframe.src = command;
+  }).finally(() => {
+    window.removeEventListener("message", onmessage);
+    iframe.removeEventListener("load", onload);
+  });
 };
 
 export default iframeDriver;
