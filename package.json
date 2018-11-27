@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "concurrently -k -s first \"serve -n\" \"cypress open\"",
     "build": "rollup -c rollup.config.js | terser --beautify --comments > websh.js",
-    "test": "browser-sync start --startPath /tests/ --server -f tests -f src"
+    "test": "browser-sync start --startPath /tests/ --server -f tests -f src",
+    "prepublishOnly": "npm run -s build"
   },
   "keywords": [
     "shell",
