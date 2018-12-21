@@ -13,8 +13,14 @@
         if (c0.length !== c1.length)
           throw new Error("AssertionError: invalid length");
         c0.forEach((r, i) => {
-          if (r !== c1[i])
-            throw new Error('AssertionError: "' + r + '" !== "' + c1[i] + '"');
+          if (JSON.stringify(r) !== JSON.stringify(c1[i]))
+            throw new Error(
+              "AssertionError: " +
+                JSON.stringify(r) +
+                " !== " +
+                JSON.stringify(c1[i]) +
+                ""
+            );
         });
       };
 
@@ -40,6 +46,50 @@
         const result = parseScript(script);
 
         assertCommandsAreEqual(command, result);
+      });
+
+      test("An url can contain whitespaces", () => {
+        const command = ["https://mysite.org/my cat.html"];
+        const script = command.join("   | ");
+
+        const result = parseScript(script);
+
+        assertCommandsAreEqual(command, result);
+      });
+
+      test("A script can contain if statements", () => {
+        const script = "if /url1; then /url2; fi";
+
+        const result = parseScript(script);
+
+        assertCommandsAreEqual(
+          [
+            {
+              type: "IfStatement",
+              test: ["/url1"],
+              consequent: ["/url2"]
+            }
+          ],
+          result
+        );
+      });
+
+      test("A script can contain if-else statements", () => {
+        const script = "if /url1; then /url2; else /url3; fi";
+
+        const result = parseScript(script);
+
+        assertCommandsAreEqual(
+          [
+            {
+              type: "IfStatement",
+              test: ["/url1"],
+              consequent: ["/url2"],
+              alternate: ["/url3"]
+            }
+          ],
+          result
+        );
       });
 
       test("An array of values being promise reduced calls the fn with the initial value", async () => {
