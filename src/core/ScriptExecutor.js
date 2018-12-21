@@ -18,12 +18,7 @@
    along with websh.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export const parseScript = script => {
-  return script
-    .split("|")
-    .map(s => s.trim())
-    .map(s => (s.startsWith('"') ? JSON.parse(s) : s));
-};
+import parser from "../parser/Parser.js";
 
 export const promiseReduce = (array, fn, seed) =>
   array.reduce(
@@ -32,6 +27,6 @@ export const promiseReduce = (array, fn, seed) =>
   );
 
 export const scriptExecutor = (script, runner) =>
-  promiseReduce(parseScript(script), runner, []);
+  promiseReduce(parser(script), runner, []);
 
 export default scriptExecutor;

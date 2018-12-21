@@ -6,7 +6,7 @@
   "main": "websh.js",
   "scripts": {
     "dev": "concurrently -k -s first \"serve -n\" \"cypress open\"",
-    "build": "rollup -c rollup.config.js | terser --beautify --comments > websh.js",
+    "build": "make dist",
     "test": "browser-sync start --startPath /tests/ --server -f tests -f src",
     "prepublishOnly": "npm run -s build"
   },
@@ -31,6 +31,7 @@
     "browser-sync": "^2.26.3",
     "concurrently": "^4.0.1",
     "cypress": "^3.1.1",
+    "jison": "^0.4.18",
     "rollup": "^0.67.3",
     "serve": "^10.1.1",
     "terser": "^3.10.12"

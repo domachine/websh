@@ -3,8 +3,8 @@
   <body style="background-color: black">
     <script type="module">
       import test from "./test.js";
+      import parseScript from "../src/parser/Parser.js";
       import scriptExecutor, {
-        parseScript,
         promiseReduce
       } from "../src/core/ScriptExecutor.js";
       import Runtime from "../src/core/Runtime.js";
