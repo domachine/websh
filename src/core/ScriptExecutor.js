@@ -26,7 +26,10 @@ export const promiseReduce = (array, fn, seed) =>
     Promise.resolve(seed)
   );
 
-export const scriptExecutor = (script, runner) =>
-  promiseReduce(parser(script), runner, []);
+export const createScriptExecutor = runner => script =>
+  promiseReduce(script, runner, []);
+
+const scriptExecutor = (script, runner) =>
+  createScriptExecutor(runner)(parser(script));
 
 export default scriptExecutor;
