@@ -3,27 +3,14 @@
   <body style="background-color: black">
     <script type="module">
       import test from "./test.js";
+      import { assertCommandsAreEqual } from "./assertions.js";
       import parseScript from "../src/parser/Parser.js";
       import scriptExecutor, {
         promiseReduce
       } from "../src/core/ScriptExecutor.js";
       import Runtime from "../src/core/Runtime.js";
 
-      const assertCommandsAreEqual = (c0, c1) => {
-        if (c0.length !== c1.length)
-          throw new Error("AssertionError: invalid length");
-        c0.forEach((r, i) => {
-          if (JSON.stringify(r) !== JSON.stringify(c1[i]))
-            throw new Error(
-              "AssertionError: " +
-                JSON.stringify(r) +
-                " !== " +
-                JSON.stringify(c1[i]) +
-                ""
-            );
-        });
-      };
-
+      // -- Parser --
       test("A sample script is being parsed as command", () => {
         const command = [
           "https://mysite.org/cat.html",
@@ -92,6 +79,7 @@
         );
       });
 
+      // -- Core --
       test("An array of values being promise reduced calls the fn with the initial value", async () => {
         const values = ["1"];
         let receivedArgs;
