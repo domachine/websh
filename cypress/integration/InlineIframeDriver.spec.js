@@ -53,4 +53,14 @@ describe("InlineIframeDriver", () => {
       .get("body")
       .should("have.attr", "style", "margin: 0px; padding: 0px;");
   });
+
+  it("Executes a script with an if-statement", () => {
+    websh()
+      .then(websh =>
+        websh(
+          "echo?text=Good | if fail; then echo?text=Not good | cat; else cat; fi"
+        )
+      )
+      .then(result => expect(result).to.deep.equal([["Good"]]));
+  });
 });

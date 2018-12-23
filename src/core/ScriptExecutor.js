@@ -26,8 +26,23 @@ export const promiseReduce = (array, fn, seed) =>
     Promise.resolve(seed)
   );
 
-export const createScriptExecutor = runner => script =>
-  promiseReduce(script, runner, []);
+export const createScriptExecutor = runner => {
+  const interpreter = (payload, script) =>
+    promiseReduce(
+      script,
+      async (payload, instr) =>
+        typeof instr === "string"
+          ? runner(payload, instr)
+          : instr.type === "IfStatement"
+          ? interpreter(payload, instr.test).then(
+              () => interpreter(payload, instr.consequent),
+              () => interpreter(payload, instr.alternate)
+            )
+          : null,
+      payload
+    );
+  return script => interpreter([], script);
+};
 
 const scriptExecutor = (script, runner) =>
   createScriptExecutor(runner)(parser(script));

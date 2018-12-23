@@ -6,6 +6,7 @@
       import { assertCommandsAreEqual } from "./assertions.js";
       import parseScript from "../src/parser/Parser.js";
       import scriptExecutor, {
+        createScriptExecutor,
         promiseReduce
       } from "../src/core/ScriptExecutor.js";
       import Runtime from "../src/core/Runtime.js";
@@ -106,10 +107,11 @@
 
       test("A program receives [] as initial input", async () => {
         let receivedInitialInput;
-
-        await scriptExecutor("cmd", payload => {
+        const scriptExecutor = createScriptExecutor(payload => {
           receivedInitialInput = payload;
         });
+
+        await scriptExecutor(["cmd"]);
 
         if (!Array.isArray(receivedInitialInput))
           throw new Error("The received initial input is not an array");
@@ -174,6 +176,83 @@
 
         if (!handled)
           throw new Error("The returned value was expected to be truthy");
+      });
+
+      test("The test of an if-statement is executed", async () => {
+        const cmd = "mycmd";
+        const script = [{ type: "IfStatement", test: [cmd], consequent: [] }];
+        const ranCommands = [];
+        const mockRunner = (payload, cmd) => {
+          ranCommands.push(cmd);
+        };
+        const scriptExecutor = createScriptExecutor(mockRunner);
+
+        await scriptExecutor(script);
+
+        if (ranCommands.length !== 1 || ranCommands[0] !== cmd)
+          throw new Error("Expected cmd wasn't run");
+      });
+
+      test("The consequent of an if-statement is executed if the test succeeds", async () => {
+        const testcmd = "testcmd";
+        const cmd = "mycmd";
+        const script = [
+          { type: "IfStatement", test: [testcmd], consequent: [cmd] }
+        ];
+        const ranCommands = [];
+        const mockRunner = (payload, cmd) => {
+          if (cmd === testcmd) return Promise.resolve([]);
+          ranCommands.push(cmd);
+        };
+        const scriptExecutor = createScriptExecutor(mockRunner);
+
+        await scriptExecutor(script);
+
+        if (ranCommands.length !== 1 || ranCommands[0] !== cmd)
+          throw new Error("Expected cmd wasn't run");
+      });
+
+      test("The alternate of an if-statement is executed if the test fails", async () => {
+        const testcmd = "testcmd";
+        const cmd = "mycmd";
+        const script = [
+          { type: "IfStatement", test: [testcmd], alternate: [cmd] }
+        ];
+        const ranCommands = [];
+        const mockRunner = (payload, cmd) => {
+          if (cmd === testcmd) throw new Error();
+          ranCommands.push(cmd);
+        };
+        const scriptExecutor = createScriptExecutor(mockRunner);
+
+        await scriptExecutor(script);
+
+        if (ranCommands.length !== 1 || ranCommands[0] !== cmd)
+          throw new Error("Expected cmd wasn't run");
+      });
+
+      test("The test of an if-statement receives the current stdin", async () => {
+        const payload = ["my", "payload"];
+        const echoCmd = "echo";
+        const testcmd = "testcmd";
+        const script = [
+          echoCmd,
+          { type: "IfStatement", test: [testcmd], consequent: [] }
+        ];
+        let receivedPayload;
+        const mockRunner = (p, cmd) => {
+          if (cmd === testcmd) {
+            receivedPayload = payload;
+          } else if (cmd === echoCmd) {
+            return p;
+          }
+        };
+        const scriptExecutor = createScriptExecutor(mockRunner);
+
+        await scriptExecutor(script);
+
+        if (receivedPayload !== payload)
+          throw new Error("Expected payload doesn't equal receivedPayload");
       });
     </script>
   </body>
